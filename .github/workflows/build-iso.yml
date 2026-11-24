@@ -9,7 +9,7 @@ defaults:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 180
     steps:
       - name: Free disk space
@@ -23,9 +23,12 @@ jobs:
       - name: Install build tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y live-build debootstrap xorriso squashfs-tools \
+          sudo apt-get install -y debootstrap xorriso squashfs-tools \
             grub-pc-bin grub-efi-amd64-bin mtools dosfstools syslinux isolinux \
-            debian-archive-keyring curl gnupg
+            debian-archive-keyring curl gnupg wget
+          wget -O /tmp/live-build.deb https://deb.debian.org/debian/pool/main/l/live-build/live-build_20230502_all.deb
+          sudo apt-get install -y /tmp/live-build.deb
+          lb --version
 
       - name: Make scripts executable
         run: |
